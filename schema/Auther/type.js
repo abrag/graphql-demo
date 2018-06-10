@@ -1,9 +1,11 @@
 const {
-  GraphQLSchema,
   GraphQLObjectType,
   GraphQLString,
   GraphQLID,
+  GraphQLList,
 } = require('graphql');
+const Post = require('../Post/type');
+const pgdb = require('../../database/pgdb');
 
 const Auther = new GraphQLObjectType({
   name: 'Auther',
@@ -15,6 +17,12 @@ const Auther = new GraphQLObjectType({
     fullName: {
       type: GraphQLString,
       resolve: obj => (`${obj.firstName} ${obj.lastName}`),
+    },
+    posts: {
+      type: new GraphQLList(Post),
+      resolve(obj, args, { pgPool }) {
+        return pgdb(pgPool).getPostsByUser(obj);
+      },
     },
   }),
 });
