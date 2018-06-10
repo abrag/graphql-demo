@@ -10,13 +10,11 @@ const Auther = new GraphQLObjectType({
   description: 'Auther data type',
   fields: () => ({
     id: { type: GraphQLID },
-    firstName: {
+    firstName: { type: GraphQLString },
+    lastName: { type: GraphQLString },
+    fullName: {
       type: GraphQLString,
-      resolve: obj => obj.first_name,
-    },
-    lastName: {
-      type: GraphQLString,
-      resolve: obj => obj.last_name,
+      resolve: obj => (`${obj.firstName} ${obj.lastName}`),
     },
   }),
 });
