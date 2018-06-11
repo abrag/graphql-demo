@@ -30,4 +30,12 @@ module.exports = pgPool => ({
       })
       .catch(logger.error);
   },
+  getPostsById(id) {
+    return pgPool.query('select * from post where id=$1', [id])
+      .then((res) => {
+        logger.info(res.rows);
+        return humps.camelizeKeys(res.rows);
+      })
+      .catch(logger.error);
+  },
 });
