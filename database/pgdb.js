@@ -4,7 +4,7 @@ const humps = require('humps');
 const orderedFor = (rows, collection, field, singleObject) => {
   const data = humps.camelizeKeys(rows);
   const inGroupsOfField = _.groupBy(data, field);
-  return collection.map(element => {
+  return collection.map((element) => {
     const elementArray = inGroupsOfField[element];
     if (elementArray) {
       return singleObject ? elementArray[0] : elementArray;
@@ -25,7 +25,7 @@ module.exports = pgPool => ({
   getAutherById(id) {
     return pgPool.query('select * from auther where id=$1', [id])
       .then((res) => {
-        logger.info(res.rows[0]);
+        logger.info(`getAutherById(${id}): ${res.rows[0]}`);
         return humps.camelizeKeys(res.rows[0]);
       })
       .catch(logger.error);
@@ -41,9 +41,17 @@ module.exports = pgPool => ({
   getPostsById(id) {
     return pgPool.query('select * from post where id=$1', [id])
       .then((res) => {
-        logger.info(res.rows);
-        return humps.camelizeKeys(res.rows);
+        logger.info(res.rows[0]);
+        return humps.camelizeKeys(res.rows[0]);
       })
       .catch(logger.error);
+  },
+  addNewContest({ title, autherId }) {
+    return pgPool.query(`
+      insert into post
+      (title, auther_id)
+      values ($1, $2)
+      returning *
+      `, [title, autherId]).then(res => humps.camelizeKeys(res.rows[0]));
   },
 });
