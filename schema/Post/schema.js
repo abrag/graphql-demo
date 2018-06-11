@@ -6,8 +6,9 @@ const Post = `
   }
   type Post {
     id: ID!
-    autherId: Int
+    auther: Auther
     title: String
+    autherId: Int
   }
 `;
 

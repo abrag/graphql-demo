@@ -7,6 +7,7 @@ module.exports = ({
     PostResolver.Query,
     AutherResolver.Query,
   ),
+  Post: PostResolver.Post,
   Auther: AutherResolver.Auther,
 });
 

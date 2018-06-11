@@ -22,6 +22,14 @@ module.exports = pgPool => ({
       })
       .catch(logger.error);
   },
+  getAutherById(id) {
+    return pgPool.query('select * from auther where id=$1', [id])
+      .then((res) => {
+        logger.info(res.rows[0]);
+        return humps.camelizeKeys(res.rows[0]);
+      })
+      .catch(logger.error);
+  },
   getPostsByUser(auther) {
     return pgPool.query('select * from post where auther_id=$1', [auther.id])
       .then((res) => {
