@@ -22,11 +22,11 @@ module.exports = pgPool => ({
       })
       .catch(logger.error);
   },
-  getAutherById(id) {
-    return pgPool.query('select * from auther where id=$1', [id])
+  getAuthersByIds(ids) {
+    return pgPool.query('select * from auther where id=ANY($1)', [ids])
       .then((res) => {
-        logger.info(`getAutherById(${id}): ${res.rows[0]}`);
-        return humps.camelizeKeys(res.rows[0]);
+        logger.info(`getAutherById(${ids}): ${res.rows}`);
+        return humps.camelizeKeys(res.rows);
       })
       .catch(logger.error);
   },

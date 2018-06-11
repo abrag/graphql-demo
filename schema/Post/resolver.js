@@ -9,6 +9,6 @@ module.exports = {
     addPostWithInput: (obj, args, { pgPool }) => pgdb(pgPool).addNewContest(args.input),
   },
   Post: {
-    auther: (obj, args, { pgPool }) => pgdb(pgPool).getAutherById(obj.autherId),
+    auther: (obj, args, { loaders }) => loaders.authesByIds.load(obj.autherId),
   },
 };
